@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using Dapper;
 
 using ZeroHora.Domain.Entities;
 using ZeroHora.Domain.Interfaces;
-using ZeroHora.Infra.Data.Connection;
+
 
 namespace ZeroHora.Infra.Data.Repository
 {
-    public class EnderecoRepository : DbConnection1RepositoryBase, IEnderecoRepository
+    public class EnderecoRepository : IEnderecoRepository
     {
-        public EnderecoRepository(IDbConnectionFactory dbConnectionFactory)
-            : base(dbConnectionFactory) { }
+        private readonly IDbConnection _dbConnection;
+        public EnderecoRepository(IDbConnection dbConnection)
+        {
+            _dbConnection = dbConnection;
+        }
 
         public IEnumerable<Endereco> GetAll()
         {
@@ -19,7 +23,7 @@ namespace ZeroHora.Infra.Data.Repository
                     INNER JOIN cidade as c ON e.cidadeid = c.id
                     ORDER BY e.id ";
 
-            var resultado = base.DbConnection.Query<Endereco, Cidade, Endereco>(sql, 
+            var resultado = _dbConnection.Query<Endereco, Cidade, Endereco>(sql,
                 map: (endereco, cidade) =>
                     {
                         endereco.Cidade = cidade;

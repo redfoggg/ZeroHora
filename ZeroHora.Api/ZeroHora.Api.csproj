@@ -4,4 +4,9 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ZeroHora.Domain\ZeroHora.Domain.csproj" />
+    <ProjectReference Include="..\ZeroHora.Infra.Data\ZeroHora.Infra.Data.csproj" />
+  </ItemGroup>
+
 </Project>
